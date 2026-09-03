@@ -1,11 +1,13 @@
 package com.taskapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
+@JsonPropertyOrder({ "id", "titulo", "descricao", "completa" })
 public class Task {
 
     @Id
