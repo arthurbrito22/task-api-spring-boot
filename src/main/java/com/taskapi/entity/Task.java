@@ -1,7 +1,15 @@
 package com.taskapi.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Task {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String titulo;
     private String descricao;
@@ -43,9 +51,7 @@ public class Task {
 
     }
 
-    public Task(long id, String titulo, String descricao, boolean completa) {
-
-        this.id = id;
+    public Task(String titulo, String descricao, boolean completa) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.completa = completa;

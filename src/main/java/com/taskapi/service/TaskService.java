@@ -1,6 +1,7 @@
 package com.taskapi.service;
 
 import com.taskapi.entity.Task;
+import com.taskapi.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 
@@ -10,20 +11,20 @@ import java.util.List;
 @Service
 
 public class TaskService {
+
+    private final TaskRepository taskRepository;
+
+    public TaskService(TaskRepository taskRepository) { this.taskRepository = taskRepository; }
+
     public List<Task> getAllTasks() {
-        List<Task> tasks = new ArrayList<>();
-        Task t = new Task(1, "Exercicio Sprint.", "Exercicio com o objetivo aprender Spring.", false);
-        tasks.add(t);
-        return tasks;
+        return taskRepository.findAll();
     }
 
     public Task getTaskById(long id) {
-        List<Task> getTasks = this.getAllTasks();
-        for (Task task : getTasks) {
-            if (task.getId() == id) {
-                return task;
-            }
-        }
-        return null;
+        return taskRepository.findById(id).orElse(null);
+    }
+
+    public Task createTask(Task task) {
+        return taskRepository.save(task);
     }
 }
