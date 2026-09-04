@@ -3,7 +3,6 @@ package com.taskapi.controller;
 import com.taskapi.entity.Task;
 import com.taskapi.service.TaskService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,5 +41,18 @@ public class TaskController {
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         Task retornoTask = taskService.createTask(task);
         return ResponseEntity.status(HttpStatus.CREATED).body(retornoTask);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
+
+        task.setId(id);
+
+        task = taskService.updateTask(task);
+
+        if (task != null) {
+            return ResponseEntity.ok(task);
+        }
+        return ResponseEntity.notFound().build();
     }
 }
