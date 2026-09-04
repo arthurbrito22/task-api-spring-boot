@@ -15,11 +15,9 @@ public class Task {
     private long id;
     private String titulo;
     private String descricao;
-    private boolean completa = false;
+    private Boolean completa;
 
-    public long getId() {
-        return id;
-    }
+    public long getId() { return id; }
 
     public void setId(long id) {
         this.id = id;
@@ -41,19 +39,17 @@ public class Task {
         this.descricao = descricao;
     }
 
-    public boolean isCompleta() {
+    public Boolean getCompleta() {
         return completa;
     }
 
-    public void setCompleta(boolean completa) {
+    public void setCompleta(Boolean completa) {
         this.completa = completa;
     }
 
-    public Task() {
+    public Task() {}
 
-    }
-
-    public Task(String titulo, String descricao, boolean completa) {
+    public Task(String titulo, String descricao, Boolean completa) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.completa = completa;

@@ -2,14 +2,13 @@ package com.taskapi.service;
 
 import com.taskapi.entity.Task;
 import com.taskapi.repository.TaskRepository;
-import jakarta.validation.constraints.NotNull;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
 import java.util.List;
 
 @Service
-
 public class TaskService {
 
     private final TaskRepository taskRepository;
@@ -19,7 +18,7 @@ public class TaskService {
     }
 
     public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+        return taskRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     public Task getTaskById(long id) {
@@ -33,12 +32,26 @@ public class TaskService {
     public Task updateTask(Task task) {
         Task existingTask = taskRepository.findById(task.getId()).orElse(null);
         if (existingTask != null) {
-            existingTask.setTitulo(task.getTitulo());
-            existingTask.setDescricao(task.getDescricao());
-            existingTask.setCompleta(task.isCompleta());
-
+            if (task.getTitulo() != null){
+                existingTask.setTitulo(task.getTitulo());
+            }
+            if (task.getDescricao() != null){
+                existingTask.setDescricao(task.getDescricao());
+            }
+            if (task.getCompleta() != null) {
+                existingTask.setCompleta(task.getCompleta());
+            }
             return taskRepository.save(existingTask);
         }
         return null;
+    }
+
+    public boolean deleteTaskById(long id) {
+        boolean taskExists = taskRepository.existsById(id);
+        if (taskExists) {
+            taskRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

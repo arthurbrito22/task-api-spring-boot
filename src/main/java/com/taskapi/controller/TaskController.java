@@ -1,6 +1,7 @@
 package com.taskapi.controller;
 
 import com.taskapi.entity.Task;
+import com.taskapi.repository.TaskRepository;
 import com.taskapi.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import java.util.List;
 @RequestMapping("/tasks")
 
 public class TaskController {
+
+    private TaskRepository taskRepo;
 
     private final TaskService taskService;
 
@@ -54,5 +57,16 @@ public class TaskController {
             return ResponseEntity.ok(task);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTaskById(@PathVariable Long id) {
+
+        boolean retorno = taskService.deleteTaskById(id);
+
+        if (retorno) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
