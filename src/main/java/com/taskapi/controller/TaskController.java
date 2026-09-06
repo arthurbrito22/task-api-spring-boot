@@ -1,6 +1,7 @@
 package com.taskapi.controller;
 
 import com.taskapi.dto.TaskRequest;
+import com.taskapi.dto.TaskUpdateRequest;
 import com.taskapi.entity.Task;
 import com.taskapi.repository.TaskRepository;
 import com.taskapi.service.TaskService;
@@ -49,14 +50,12 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @Valid @RequestBody TaskUpdateRequest taskUpdateRequest) {
 
-        task.setId(id);
+        Task taskUpdated = taskService.updateTask(id, taskUpdateRequest);
 
-        task = taskService.updateTask(task);
-
-        if (task != null) {
-            return ResponseEntity.ok(task);
+        if (taskUpdated != null) {
+            return ResponseEntity.ok(taskUpdated);
         }
         return ResponseEntity.notFound().build();
     }
