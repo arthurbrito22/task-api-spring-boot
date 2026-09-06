@@ -1,5 +1,6 @@
 package com.taskapi.service;
 
+import com.taskapi.dto.TaskRequest;
 import com.taskapi.entity.Task;
 import com.taskapi.repository.TaskRepository;
 import org.springframework.data.domain.Sort;
@@ -25,8 +26,12 @@ public class TaskService {
         return taskRepository.findById(id).orElse(null);
     }
 
-    public Task createTask(Task task) {
-        return taskRepository.save(task);
+    public Task createTask(TaskRequest taskRequest) {
+        Task newTask = new Task();
+        newTask.setTitulo(taskRequest.getTitulo());
+        newTask.setDescricao(taskRequest.getDescricao());
+        newTask.setCompleta(false);
+        return taskRepository.save(newTask);
     }
 
     public Task updateTask(Task task) {

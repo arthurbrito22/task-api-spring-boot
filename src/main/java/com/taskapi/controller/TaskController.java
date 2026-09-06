@@ -1,8 +1,10 @@
 package com.taskapi.controller;
 
+import com.taskapi.dto.TaskRequest;
 import com.taskapi.entity.Task;
 import com.taskapi.repository.TaskRepository;
 import com.taskapi.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +43,8 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        Task retornoTask = taskService.createTask(task);
+    public ResponseEntity<Task> createTask(@Valid @RequestBody TaskRequest taskRequest) {
+        Task retornoTask = taskService.createTask(taskRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(retornoTask);
     }
 
