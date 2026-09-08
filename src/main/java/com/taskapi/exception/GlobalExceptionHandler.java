@@ -19,11 +19,12 @@ public class GlobalExceptionHandler {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
-
-
-
-
         });
         return new ResponseEntity<ValidationErrorResponse>(new ValidationErrorResponse(400, errors) , HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+        ErrorResponse errorResponse = new ErrorResponse(404, e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 }
