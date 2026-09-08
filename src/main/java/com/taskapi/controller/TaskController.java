@@ -3,6 +3,7 @@ package com.taskapi.controller;
 import com.taskapi.dto.TaskRequest;
 import com.taskapi.dto.TaskUpdateRequest;
 import com.taskapi.entity.Task;
+import com.taskapi.exception.ResourceNotFoundException;
 import com.taskapi.repository.TaskRepository;
 import com.taskapi.service.TaskService;
 import jakarta.validation.Valid;
@@ -33,14 +34,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable long id) {
-
-        Task retornoTask = taskService.getTaskById(id);
-
-        if (retornoTask != null) {
-            return ResponseEntity.ok(retornoTask);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
     @PostMapping
@@ -51,13 +45,7 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @Valid @RequestBody TaskUpdateRequest taskUpdateRequest) {
-
-        Task taskUpdated = taskService.updateTask(id, taskUpdateRequest);
-
-        if (taskUpdated != null) {
-            return ResponseEntity.ok(taskUpdated);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(taskService.updateTask(id, taskUpdateRequest));
     }
 
     @DeleteMapping("/{id}")
