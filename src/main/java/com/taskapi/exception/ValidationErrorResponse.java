@@ -8,6 +8,10 @@ public class ValidationErrorResponse {
     private int status;
     private Map<String, String> errors;
 
+    public ValidationErrorResponse() {
+
+    }
+
     public Map<String, String> getErrors() {
         return errors;
     }
