@@ -3,6 +3,8 @@ package com.taskapi.service;
 import com.taskapi.dto.TaskRequest;
 import com.taskapi.dto.TaskUpdateRequest;
 import com.taskapi.entity.Task;
+import com.taskapi.exception.ErrorResponse;
+import com.taskapi.exception.ResourceNotFoundException;
 import com.taskapi.repository.TaskRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class TaskService {
     }
 
     public Task getTaskById(long id) {
-        return taskRepository.findById(id).orElse(null);
+        return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found with ID: " + id));
     }
 
     public Task createTask(TaskRequest taskRequest) {
@@ -36,20 +38,11 @@ public class TaskService {
     }
 
     public Task updateTask(Long id, TaskUpdateRequest taskUpdateRequest) {
-        Task existingTask = taskRepository.findById(id).orElse(null);
-        if (existingTask != null) {
-            if (taskUpdateRequest.getTitulo() != null){
-                existingTask.setTitulo(taskUpdateRequest.getTitulo());
-            }
-            if (taskUpdateRequest.getDescricao() != null){
-                existingTask.setDescricao(taskUpdateRequest.getDescricao());
-            }
-            if (taskUpdateRequest.getCompleta() != null) {
-                existingTask.setCompleta(taskUpdateRequest.getCompleta());
-            }
-            return taskRepository.save(existingTask);
-        }
-        return null;
+        Task existingTask = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found with ID: " + id));
+        existingTask.setTitulo(taskUpdateRequest.getTitulo());
+        existingTask.setDescricao(taskUpdateRequest.getDescricao());
+        existingTask.setCompleta(taskUpdateRequest.getCompleta());
+        return taskRepository.save(existingTask);
     }
 
     public boolean deleteTaskById(long id) {
