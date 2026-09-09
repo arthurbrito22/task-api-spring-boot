@@ -45,12 +45,8 @@ public class TaskService {
         return taskRepository.save(existingTask);
     }
 
-    public boolean deleteTaskById(long id) {
-        boolean taskExists = taskRepository.existsById(id);
-        if (taskExists) {
-            taskRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteTaskById(long id) {
+        Task deleteTask = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found with ID: " + id));
+        taskRepository.delete(deleteTask);
     }
 }
