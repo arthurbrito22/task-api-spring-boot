@@ -99,8 +99,8 @@ class TaskServiceTest {
     void updateTask() {
         Long taskId = 1L;
         TaskUpdateRequest taskUpdateRequest = new TaskUpdateRequest();
-        taskUpdateRequest.setTitulo("titulo atualizado");
-        taskUpdateRequest.setDescricao("descricao atualizada");
+        taskUpdateRequest.setTitulo("Título Atualizado");
+        taskUpdateRequest.setDescricao("Descrição Atualizada");
 
         Task existingTask = new Task("Título Antigo", "Descrição Antiga", false);
         existingTask.setId(taskId);
@@ -114,8 +114,8 @@ class TaskServiceTest {
         Task result = taskService.updateTask(taskId, taskUpdateRequest);
 
         assertNotNull(result);
-        assertEquals("titulo atualizado", result.getTitulo());
-        assertEquals("descricao atualizada", result.getDescricao());
+        assertEquals("Título Atualizado", result.getTitulo());
+        assertEquals("Descrição Atualizada", result.getDescricao());
 
         verify(taskRepository, times(1)).findById(taskId);
         verify(taskRepository, times(1)).save(any(Task.class));
@@ -153,14 +153,14 @@ class TaskServiceTest {
 
 
         verify(taskRepository, times(1)).findById(taskId);
-        verify(taskRepository, times(1)).deleteById(taskId);
+        verify(taskRepository, times(1)).delete(any(Task.class));
     }
 
     @Test
     @DisplayName("Deve lancar ResourceNotFoundException ao tentar deletar tarefa inexistente")
     void deleteTaskByIdInexistente() {
         Long taskId = 1L;
-        when(taskRepository.findById(taskId)).thenReturn(Optional.of(new Task()));
+        when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
 
         ResourceNotFoundException exception = assertThrows(
                 ResourceNotFoundException.class,
