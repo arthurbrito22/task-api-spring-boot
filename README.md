@@ -124,15 +124,60 @@ A API estará disponível em: `http://localhost:8080/tasks`
 
 ---
 
+## 🧪 Testes Automatizados (Testes Unitários)
+
+O projeto conta com uma suíte de testes unitários focada na camada de serviço (`TaskService`), garantindo o isolamento das dependências de banco de dados e a validação das regras de negócio com **JUnit 5** e **Mockito** [1, 2].
+
+### Tecnologias e Ferramentas
+* **JUnit 5**: Estruturação dos testes, ciclo de vida e asserções (`assertNotNull`, `assertEquals`, `assertThrows`) [2, 3].
+* **Mockito**: Simulação de dependências (`@Mock`), injeção na classe testada (`@InjectMocks`) e extensão via `@ExtendWith(MockitoExtension.class)` [2].
+
+### Cenários Cobertos (`TaskServiceTest`)
+
+A suíte segue o padrão **AAA (Arrange, Act, Assert)** e cobre cenários positivos e negativos [2]:
+
+1. **Listagem de Tarefas (`getAllTasks`)**:
+    * Valida o retorno de tarefas e a correta aplicação de ordenação (`Sort`).
+2. **Busca por ID (`getTaskById`)**:
+    * **Caminho Feliz**: Retorna os detalhes da tarefa para um ID existente.
+    * **Cenário Negativo**: Lança a exceção `ResourceNotFoundException` com mensagem tratada ao buscar um ID inexistente.
+3. **Criação de Tarefa (`createTask`)**:
+    * Mapeia os dados do DTO/Request e confirma o salvamento no repositório.
+4. **Atualização de Tarefa (`updateTask`)**:
+    * **Caminho Feliz**: Atualiza e persiste as informações alteradas.
+    * **Cenário Negativo**: Lança `ResourceNotFoundException` se o ID for inexistente e garante que o salvamento **nunca** seja acionado (`verify(..., never())`).
+5. **Exclusão de Tarefa (`deleteTaskById`)**:
+    * **Caminho Feliz**: Localiza o recurso e confirma a exclusão no repositório.
+    * **Cenário Negativo**: Interrompe o fluxo lançando `ResourceNotFoundException` caso o registro não exista, impedindo chamadas indevidas ao banco.
+
+---
+
+### Como Executar os Testes
+
+Para executar toda a suíte de testes unitários localmente, utilize o comando do Maven [4]:
+
+
+
+## Usando o Maven Wrapper (recomendado)
+`./mvnw test`
+
+## Ou utilizando o Maven instalado na máquina
+`mvn test`
+
+
+
 ## 📦 Histórico de Commits e Evolução
 
 O projeto foi construído incrementalmente através de **commits atômicos e modulares**:
 
+- `feat(cors): implement @CrossOrigin for Angular frontend integration`
+- `feat(test): implement unit tests using JUnit 5 and Mockito`
+- `fix(test): adjust test execution code lines to resolve errors`
 - `feat(exception): add ResourceNotFoundException and ErrorResponse DTO`
 - `feat(exception): handle ResourceNotFoundException globally with 404 status`
 - `refactor(service): throw ResourceNotFoundException in find and update operations`
 - `refactor(controller): simplify task GET and PUT endpoints by removing redundant null-checks`
-- `refactor(task): implementa exclusao segura com orElseThrow e status 204`
+- `refactor(task): implement secure deletion with orElseThrow and 204 status`
 
 ---
 
